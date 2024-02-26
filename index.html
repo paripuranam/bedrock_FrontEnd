@@ -13,7 +13,7 @@
             display: flex;
             flex-direction: row;
             align-items: flex-start;
-            justify-content: center; /* Center content horizontally */
+            justify-content: center; 
             height: 100vh;
         }
 
@@ -45,16 +45,16 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             resize: none;
-            overflow-y: hidden; /* Hide the vertical scrollbar */
+            overflow-y: hidden; 
         }
 
         textarea.expanding {
-            min-height: 60px; /* Set a minimum height for the textarea */
+            min-height: 60px; 
         }
 
         .button-group {
             display: flex;
-            justify-content: center; /* Center content horizontally */
+            justify-content: center; 
             width: 100%;
         }
 
@@ -80,7 +80,7 @@
             background-color: #f2f2f2;
             border: 1px solid #ccc;
             text-align: left;
-            display: none; /* Initially hidden */
+            display: none; 
         }
 
         .loading {
@@ -101,7 +101,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             /* margin: 0 5px; */
-            display: none; /* Initially hidden */
+            display: none; 
         }
 
         .copy-button:hover{
@@ -129,8 +129,8 @@
         // Function to expand textarea based on content
         function expandTextarea() {
             const textarea = document.getElementById('prompt');
-            textarea.style.height = 'auto'; // Reset height to auto
-            textarea.style.height = (textarea.scrollHeight + 2) + 'px'; // Set new height
+            textarea.style.height = 'auto'; 
+            textarea.style.height = (textarea.scrollHeight + 2) + 'px'; 
         }
 
         // Call expandTextarea() when typing in the textarea
@@ -138,9 +138,9 @@
 
         // Event listener for Enter key press
         document.getElementById('prompt').addEventListener('keypress', function(event) {
-            if (event.keyCode === 13) { // 13 is the key code for Enter
-                event.preventDefault(); // Prevent the default action (e.g., line break in textarea)
-                generateCompletion(); // Call generateCompletion() when Enter key is pressed
+            if (event.keyCode === 13) { 
+                event.preventDefault();
+                generateCompletion(); 
             }
         });
 
@@ -189,7 +189,7 @@
 
                 document.querySelector('.loading').style.display = 'none';
                 
-                document.getElementById('completion').style.display = 'block'; // Show completion column
+                document.getElementById('completion').style.display = 'block'; 
                 document.querySelector('.copy-button').style.display = 'inline-block';
             } catch (error) {
                 console.error('Error:', error);
