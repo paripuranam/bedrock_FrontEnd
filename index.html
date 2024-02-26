@@ -37,6 +37,11 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             resize: none;
+            overflow-y: hidden; /* Hide the vertical scrollbar */
+        }
+
+        textarea.expanding {
+            min-height: 60px; /* Set a minimum height for the textarea */
         }
 
         button {
@@ -80,7 +85,7 @@
 <body>
     <div id="main-content">
         <h1>Text Generation</h1>
-        <textarea id="prompt" rows="4" placeholder="Enter the prompt"></textarea>
+        <textarea id="prompt" rows="1" class="expanding" placeholder="Enter the prompt"></textarea>
         <button onclick="generateCompletion()">Generate Text</button>
         <div class="loading">
             <img src="loading-loading-forever.gif" alt="Loading...">
@@ -90,6 +95,17 @@
     </div>
 
     <script>
+        // Function to expand textarea based on content
+        function expandTextarea() {
+            const textarea = document.getElementById('prompt');
+            textarea.style.height = 'auto'; // Reset height to auto
+            textarea.style.height = (textarea.scrollHeight + 2) + 'px'; // Set new height
+        }
+
+        // Call expandTextarea() when typing in the textarea
+        document.getElementById('prompt').addEventListener('input', expandTextarea);
+
+        // Rest of your JavaScript code
         async function generateCompletion() {
             const prompt = document.getElementById('prompt').value;
             const requestOptions = {
