@@ -29,7 +29,13 @@
             color: #000000;
             margin-bottom: 20px;
             text-shadow: #333;
-
+            display: flex;
+            justify-content: center;
+        }
+        h2{
+            margin-top: -10px;
+            display: flex;
+            justify-content: center;
         }
 
         textarea {
@@ -106,6 +112,7 @@
 <body>
     <div id="main-content">
         <h1>Open Assistant</h1>
+        <h2><span class="typing-animation">How can I help you?</span></h2>
         <textarea id="prompt" rows="1" class="expanding" placeholder="Enter the prompt"></textarea>
         <div class="button-group">
             <button onclick="startVoiceInput()">Start Voice Input</button>
