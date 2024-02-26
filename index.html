@@ -13,7 +13,7 @@
             display: flex;
             flex-direction: row;
             align-items: flex-start;
-            justify-content: center;
+            justify-content: center; /* Center content horizontally */
             height: 100vh;
         }
 
@@ -26,8 +26,10 @@
         }
 
         h1 {
-            color: #333;
+            color: #000000;
             margin-bottom: 20px;
+            text-shadow: #333;
+
         }
 
         textarea {
@@ -44,7 +46,13 @@
             min-height: 60px; /* Set a minimum height for the textarea */
         }
 
-        button {
+        .button-group {
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            width: 100%;
+        }
+
+        .button-group button {
             background-color: #007bff;
             color: #fff;
             padding: 10px 20px;
@@ -52,9 +60,10 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 0 5px;
         }
 
-        button:hover {
+        .button-group button:hover {
             background-color: #0056b3;
         }
 
@@ -65,6 +74,7 @@
             background-color: #f2f2f2;
             border: 1px solid #ccc;
             text-align: left;
+            display: none; /* Initially hidden */
         }
 
         .loading {
@@ -77,16 +87,30 @@
         }
 
         .copy-button {
-            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            /* margin: 0 5px; */
             display: none; /* Initially hidden */
+        }
+
+        .copy-button:hover{
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div id="main-content">
-        <h1>Text Generation</h1>
+        <h1>Open Assistant</h1>
         <textarea id="prompt" rows="1" class="expanding" placeholder="Enter the prompt"></textarea>
-        <button onclick="generateCompletion()">Generate Text</button>
+        <div class="button-group">
+            <button onclick="startVoiceInput()">Start Voice Input</button>
+            <button onclick="generateCompletion()">Generate Text</button>
+        </div>
         <div class="loading">
             <img src="loading-loading-forever.gif" alt="Loading...">
         </div>
@@ -105,7 +129,36 @@
         // Call expandTextarea() when typing in the textarea
         document.getElementById('prompt').addEventListener('input', expandTextarea);
 
-        // Rest of your JavaScript code
+        // Event listener for Enter key press
+        document.getElementById('prompt').addEventListener('keypress', function(event) {
+            if (event.keyCode === 13) { // 13 is the key code for Enter
+                event.preventDefault(); // Prevent the default action (e.g., line break in textarea)
+                generateCompletion(); // Call generateCompletion() when Enter key is pressed
+            }
+        });
+
+        // Function to start voice input
+        function startVoiceInput() {
+            const recognition = new window.webkitSpeechRecognition() || new window.SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = function(event) {
+                const speechToText = event.results[0][0].transcript;
+                document.getElementById('prompt').value = speechToText;
+                generateCompletion(); // Automatically generate text after speech recognition
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                alert('Speech recognition error. Please try again.');
+            };
+
+            recognition.start();
+        }
+
+        // Function to generate text
         async function generateCompletion() {
             const prompt = document.getElementById('prompt').value;
             const requestOptions = {
@@ -129,12 +182,14 @@
 
                 document.querySelector('.loading').style.display = 'none';
                 
+                document.getElementById('completion').style.display = 'block'; // Show completion column
                 document.querySelector('.copy-button').style.display = 'inline-block';
             } catch (error) {
                 console.error('Error:', error);
             }
         }
 
+        // Function to copy text
         function copyText() {
             const completionText = document.getElementById('completion').innerText;
             const tempTextArea = document.createElement('textarea');
